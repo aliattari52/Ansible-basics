@@ -1,0 +1,15 @@
+- hosts: <host group>        ###Need to mention host group inside ansible configuration
+  become: true
+  vars:
+    user: <username>      ### Need to mention user name
+    password: <password>    ### Need to mention password
+  tasks:
+  - name: Create User
+    user:
+     name: "{{ user }}"
+     password: "{{ password | password_hash('sha512') }}"
+  - name: Create sudo access
+    lineinfile:
+        path: /etc/sudoers
+        line: '"{{ user }}"      ALL=(ALL)       ALL'
+        insertafter: root       ALL=(ALL)       ALL
