@@ -7,10 +7,16 @@
         patterns: "<pattern>"     ## Choose pattern of files. For example "^ali.*"  -- This will select all files starting with letters ali
         use_regex: true
       register: selected_files
-    - name: Archive file to bz2 format
+    - name: Archive file to zip format
       archive:
         path: "{{ files_to_archive }}"
         dest: <Archived zip file path>    ## For example /home/ansible/my_files.zip
         format: zip
       vars:
         files_to_archive: "{{ selected_files.files | map(attribute='path') | list }}"
+    - name: Removing files after archiving
+      file:
+        path: "{{ files_to_delete }}"
+        state: absent
+      vars:
+        files_to_delete: "{{ selected_files.files | map(attribute='path') | list }}"
