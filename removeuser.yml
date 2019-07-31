@@ -1,0 +1,12 @@
+- hosts: <host group>      ###Need to mention host group inside ansible configuration
+  become: true
+  tasks:
+  - name: Remove user
+    user:
+     name: "{{ item }}"
+     state: absent
+     remove: yes
+    with_items:
+        - <user1>          ### Need to mention users which need to be deleted. It should be minimum one and no maximum limit
+        - <user2>
+        - <user3>

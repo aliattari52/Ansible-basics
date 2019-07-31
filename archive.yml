@@ -1,0 +1,16 @@
+- hosts: <host group>    ## Need to mention the host group in Ansible configuration file
+  become: true
+  tasks:
+    - name: Select Pattern of files which need to be archived in the folder
+      find:
+        paths: <complete path>  ## Write complete path of your directory. For example /home/ansible/
+        patterns: "<pattern>"     ## Choose pattern of files. For example "^ali.*"  -- This will select all files starting with letters ali
+        use_regex: true
+      register: selected_files
+    - name: Archive file to bz2 format
+      archive:
+        path: "{{ files_to_archive }}"
+        dest: <Archived zip file path>    ## For example /home/ansible/my_files.zip
+        format: zip
+      vars:
+        files_to_archive: "{{ selected_files.files | map(attribute='path') | list }}"

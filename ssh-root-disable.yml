@@ -1,0 +1,19 @@
+- hosts: <host group>     ## Need to mention host group in Ansible Configuration file
+  become: true
+  tasks:
+   - name: Change sshd config
+     replace:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item }}"
+        replace: "PermitRootLogin no"
+     with_items:
+       - "PermitRootLogin yes"
+       - "^#PermitRootLogin.*"
+     notify:
+       - restart sshd
+
+  handlers:
+   - name: restart sshd
+     service:
+        name: sshd
+        state: restarted

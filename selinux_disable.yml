@@ -1,0 +1,12 @@
+- hosts: <host group>   ## Need to mention host group inside Ansible Configuration
+  become: true
+  tasks:
+    - name: Check & Disable selinux
+      selinux:
+        state: disabled
+      notify:
+        - reboot_server
+  handlers:
+    - name: reboot_server
+      reboot:
+        post_reboot_delay: 60
